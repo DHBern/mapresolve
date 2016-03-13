@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+      <title>Look up some locations</title>
+
+      <!-- Bootstrap -->
+      {% load staticfiles %}
+      <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+      <link href="https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.css" rel="stylesheet" />
+      <link href="{% static 'css/placeresolve.css' %}" rel="stylesheet">
+
+  </head>
+  <body>
+    <h1>Let's find some locations here</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="error"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3" id="placelist">
+                <!-- This is the list of places pulled from the database -->
+                {% if all_locations %}
+                    <table class="table">
+                        {% for loc in all_locations %}
+                            {% if loc.osm_record %}
+                            <tr class="location success">
+                            {% else %}
+                            <tr class="location">
+                            {% endif %}
+                                <td>{{ loc.locName }}</td>
+                                <td class="hidden locid">{{ loc.locationKey }}</td>
+                                <td class="hidden qname">{{ loc.queryName | default:loc.locName }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% endif %}
+            </div>
+            <div class="col-xs-3">
+                <!-- A form with which an OSM query can be made -->
+                <form id="geosearch">
+                    <div class="form-group">
+                        <label for="querystring">Search term for this place</label>
+                        <input class="form-control" id="querystring" name="q" type="text">
+                        <input id="locid" name="for" type="hidden">
+                    </div>
+                    <a class="btn btn-default" id="do_geosearch">Resolve</a>
+                </form>
+                <!-- A place to display the results of the query -->
+                <div id="queryresults"></div>
+            </div>
+            <div class="col-xs-6">
+                <!-- A place to display the map -->
+                <div id="mappane">
+                    <div id="map"></div>
+                    <div class="center-block text-center" style="margin-top: 50px;">
+                        <a class="btn btn-lg btn-primary" id="save_place">This is the one!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="template" id="candidate">
+        <div class="row searchresult">
+            <div class="col-xs-12">
+                <h4>__NAME__</h4>
+                <p>__CLASS__ // __TYPE__</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/jquery-2.2.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js'></script>
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-osm/v0.1.0/leaflet-osm.js'></script>
+    <script src="{% static 'js/placeresolve.js' %}"></script>
+  </body>
+</html>
