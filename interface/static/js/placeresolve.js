@@ -50,7 +50,7 @@ function geosearch () {
     // Send the AJAX query
     $("#error").empty();
     $("#saveresult").empty();
-    $.getJSON('/interface/placequery', $("#geosearch").serialize(), function(resp) {
+    $.getJSON('/placequery', $("#geosearch").serialize(), function(resp) {
         // Hide the form and replace it with a table full of the results
         var resultbox = $("#queryresults");
         resultbox.empty();
@@ -93,7 +93,7 @@ $(document).ready( function () {
 
         // Display the map if there is a saved result
         $.ajax({
-            url: '/interface/place/' + locid, dataType: "xml", success: function (xml) {
+            url: '/place/' + locid, dataType: "xml", success: function (xml) {
                 init_map();
                 $("#mappane").show();
                 currentData = xml;
@@ -112,7 +112,7 @@ $(document).ready( function () {
     
     $("#save_place").click( function() {
         // Send the current OSM data back to the server for the selected place
-        var url = '/interface/place/' + $(".info").children('.locid').text();
+        var url = '/place/' + $(".info").children('.locid').text();
         var xmlbody = new XMLSerializer().serializeToString(currentData);
         $.post(url, xmlbody, function () {
             // Add the 'success' class to the appropriate left-hand row
@@ -122,7 +122,7 @@ $(document).ready( function () {
         
     });
 }).ajaxError(function (event, jqXHR, settings, thrownError) {
-    if(settings.url.match('/interface/place') && thrownError === "Not Found") {
+    if(settings.url.match('/place') && thrownError === "Not Found") {
         // Not really an error, just no result from the lookup
         $("#mappane").hide();
     } else {
