@@ -46,6 +46,34 @@ function loadmap(resultdiv) {
     });
 }
 
+function geosearch () {
+    // Send the AJAX query
+    $("#error").empty();
+    $("#saveresult").empty();
+    $.getJSON('/interface/placequery', $("#geosearch").serialize(), function(resp) {
+        // Hide the form and replace it with a table full of the results
+        var resultbox = $("#queryresults");
+        resultbox.empty();
+        resultbox.show();
+        if( resp.length > 0 ) {
+            $.each(resp, function (i, record) {
+                // Get the template as an HTML string
+                var rowstr = $('#candidate').html();
+                // Substitute the relevant values
+                rowstr = rowstr.replace('__NAME__', record.display_name);
+                rowstr = rowstr.replace('__CLASS__', record.class);
+                rowstr = rowstr.replace('__TYPE__', record.type);
+                var row = $(rowstr);
+                resultbox.append(row);
+                row.data("osmdata", record);
+                row.click(function() {loadmap($(this))});
+            });
+        } else {
+            resultbox.html('<p> No results found for this place name. Try another name?</p>');
+        }
+    });
+}
+
 $(document).ready( function () {
     $('#geosearch').hide();
     $('#mappane').hide();
@@ -80,33 +108,7 @@ $(document).ready( function () {
         $("#geosearch").show();
     });
 
-    $("#do_geosearch").click( function () {
-        // Send the AJAX query
-        $("#error").empty();
-        $("#saveresult").empty();
-        $.getJSON('/interface/placequery', $("#geosearch").serialize(), function(resp) {
-            // Hide the form and replace it with a table full of the results
-            var resultbox = $("#queryresults");
-            resultbox.empty();
-            resultbox.show();
-            if( resp.length > 0 ) {
-                $.each(resp, function (i, record) {
-                    // Get the template as an HTML string
-                    var rowstr = $('#candidate').html();
-                    // Substitute the relevant values
-                    rowstr = rowstr.replace('__NAME__', record.display_name);
-                    rowstr = rowstr.replace('__CLASS__', record.class);
-                    rowstr = rowstr.replace('__TYPE__', record.type);
-                    var row = $(rowstr);
-                    resultbox.append(row);
-                    row.data("osmdata", record);
-                    row.click(function() {loadmap($(this))});
-                });
-            } else {
-                resultbox.html('<p> No results found for this place name. Try another name?</p>');
-            }
-        });
-    });
+    $("#do_geosearch").click(geosearch);
     
     $("#save_place").click( function() {
         // Send the current OSM data back to the server for the selected place

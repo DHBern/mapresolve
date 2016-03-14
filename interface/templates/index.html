@@ -44,7 +44,7 @@
             </div>
             <div class="col-xs-3">
                 <!-- A form with which an OSM query can be made -->
-                <form id="geosearch">
+                <form id="geosearch" onsubmit="geosearch(); return false">
                     <div class="form-group">
                         <label for="querystring">Search term for this place</label>
                         <input class="form-control" id="querystring" name="q" type="text">
