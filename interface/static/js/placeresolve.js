@@ -20,6 +20,7 @@ function loadmap(resultdiv) {
     init_map();
     // Clear error and set the row color
     $("#error").empty();
+    $("#saveresult").empty();
     $("#mappane").show();
     $(".searchresult").removeClass("selected");
     resultdiv.addClass("selected");
@@ -52,6 +53,7 @@ $(document).ready( function () {
     $(".location").click( function() {
         // Empty work boxes
         $("#error").empty();
+        $("#saveresult").empty();
         $("#queryresults").hide();
         // Mark the place that is currently selected
         $(".info").removeClass("info");
@@ -81,6 +83,7 @@ $(document).ready( function () {
     $("#do_geosearch").click( function () {
         // Send the AJAX query
         $("#error").empty();
+        $("#saveresult").empty();
         $.getJSON('/interface/placequery', $("#geosearch").serialize(), function(resp) {
             // Hide the form and replace it with a table full of the results
             var resultbox = $("#queryresults");
@@ -112,6 +115,7 @@ $(document).ready( function () {
         $.post(url, xmlbody, function () {
             // Add the 'success' class to the appropriate left-hand row
             $('.info').addClass('success');
+            $('#saveresult').html('<p>Place resolved!</p>');
         })
         
     });
@@ -120,7 +124,7 @@ $(document).ready( function () {
         // Not really an error, just no result from the lookup
         $("#mappane").hide();
     } else {
-        p = $('<p>').text("Error fetching " + settings.url + ": " + thrownError);
+        var p = $('<p>').text("Error fetching " + settings.url + ": " + thrownError);
         $("#error").append(p);
     }
 });

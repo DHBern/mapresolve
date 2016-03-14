@@ -12,6 +12,11 @@
     color: darkred;
 }
 
+#saveresult {
+    margin-top: 50px;
+    color: darkgreen;
+}
+
 .active.success {
     background-color: green;
 }

@@ -17,7 +17,6 @@ class Location(models.Model):
     osm_record = models.TextField(null=True)
     queryName = models.CharField(max_length=100, default='')
 
-
     def __str__(self):
         return self.locName
 
