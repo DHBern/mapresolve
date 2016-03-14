@@ -114,12 +114,19 @@ $(document).ready( function () {
         // Send the current OSM data back to the server for the selected place
         var url = '/place/' + $(".info").children('.locid').text();
         var xmlbody = new XMLSerializer().serializeToString(currentData);
-        $.post(url, xmlbody, function () {
-            // Add the 'success' class to the appropriate left-hand row
-            $('.info').addClass('success');
-            $('#saveresult').html('<p>Place resolved!</p>');
-        })
-        
+        $.ajax({
+            url: url,
+            data: xmlbody,
+            method: 'POST',
+            success: function () {
+                // Add the 'success' class to the appropriate left-hand row
+                $('.info').addClass('success');
+                $('#saveresult').html('<p>Place resolved!</p>');
+            },
+            headers: {
+                'X-CSRFToken': Cookies.get('csrftoken')
+            }
+        });
     });
 }).ajaxError(function (event, jqXHR, settings, thrownError) {
     if(settings.url.match('/place') && thrownError === "Not Found") {

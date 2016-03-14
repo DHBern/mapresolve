@@ -1,6 +1,7 @@
 import json
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
+from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import Location
 from geopy.geocoders import Nominatim
 
@@ -16,6 +17,7 @@ TESTRESULT = [{"class": "historic", "display_name": "Ani",
 
 
 # Create your views here.
+@ensure_csrf_cookie
 def index(request):
     context = {
         'all_locations': Location.objects.order_by('locName')
