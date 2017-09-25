@@ -1,0 +1,40 @@
+#placelist {
+    height: 650px;
+    overflow-y: scroll;
+}
+
+#map {
+    height: 450px;
+}
+
+#error {
+    height: 50px;
+    color: darkred;
+}
+
+#saveresult {
+    margin-top: 50px;
+    color: darkgreen;
+}
+
+.active.success {
+    background-color: green;
+}
+
+.searchresult {
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px darkblue solid;
+}
+
+.selected {
+    background-color: #b9def0;
+}
+
+.template {
+    display: none;
+}
+
+h4 {
+    color: darkblue;
+}
